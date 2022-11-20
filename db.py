@@ -1,9 +1,10 @@
 import mysql.connector
 
 mydb = mysql.connector.connect(
-    host="127.0.0.1",  # 数据库主机地址
+    host="66.59.199.220",  # 数据库主机地址
     user="root",  # 数据库用户名
-    passwd="123456"  # 数据库密码
+    passwd="Mysql_147",  # 数据库密码
+    auth_plugin='mysql_native_password'
 )
 
 def get_record(sql,na):
@@ -15,3 +16,8 @@ def get_record(sql,na):
     myresult = mycursor.fetchall()  # fetchall() 获取所有记录
 
     return myresult
+
+def insert_record(sql, na):
+    mycursor = mydb.cursor()
+    mycursor.execute(sql, na)
+    mydb.commit()
