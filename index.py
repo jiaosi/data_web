@@ -21,7 +21,8 @@ def index():
         d_array.append([result[4], result[7], result[9]])
     data = pd.DataFrame(d_array)
     data.columns = ['new', 'old', 'date']
-    data['date'] = pd.to_datetime(data['date'])
+    data['date'] = pd.to_datetime(data['date'], format = '%Y/%m/%d')
+    data = data.sort_values('date')
 
     fig, ax = plt.subplots(figsize=(20, 6))
     # data.fillna(0, inplace = True)
@@ -61,4 +62,5 @@ def show_subpath(subpath):
     return 'Subpath %s' % escape(subpath)
 
 if __name__ == '__main__':
-    app.run(debug=True,host='0.0.0.0')
+   # app.run(debug=True,host='0.0.0.0')
+    app.run()

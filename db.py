@@ -1,10 +1,10 @@
 import mysql.connector
 
 mydb = mysql.connector.connect(
-    host="66.59.199.220",  # 数据库主机地址
+    host="127.0.0.1",  # 数据库主机地址
     user="root",  # 数据库用户名
-    passwd="Mysql_147",  # 数据库密码
-    auth_plugin='mysql_native_password'
+    passwd="Mysql_147"  # 数据库密码
+    #auth_plugin='mysql_native_password'
 )
 
 def get_record(sql,na):
