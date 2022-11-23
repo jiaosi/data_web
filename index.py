@@ -5,6 +5,8 @@ import pandas as pd
 import db
 from io import BytesIO
 import base64
+from wsgiref.simple_server import make_server
+
 
 app = Flask(__name__)
 
@@ -14,14 +16,17 @@ app = Flask(__name__)
 def index():
     sql = "select * from mytest_db.house_trade_data where str_to_date(date, '%Y/%m/%d') between date_sub(now(), interval 60 day) and now();"
     na = ()
-    results = db.get_record(sql, na)
+    mydb = db.DB()
+    results = mydb.get_record(sql, na)
+    mydb.close()
     results.reverse()
     d_array = []
     for result in results:
         d_array.append([result[4], result[7], result[9]])
     data = pd.DataFrame(d_array)
     data.columns = ['new', 'old', 'date']
-    data['date'] = pd.to_datetime(data['date'])
+    data['date'] = pd.to_datetime(data['date'], format = '%Y/%m/%d')
+    data = data.sort_values('date')
 
     fig, ax = plt.subplots(figsize=(20, 6))
     # data.fillna(0, inplace = True)
@@ -60,5 +65,8 @@ def show_subpath(subpath):
     # show the subpath after /path/
     return 'Subpath %s' % escape(subpath)
 
-if __name__ == '__main__':
-    app.run(debug=True,host='0.0.0.0')
+# if __name__ == '__main__':
+#     app.run(debug=True,host='0.0.0.0')
+
+server = make_server("", 6001, app)
+server.serve_forever()  # poll_interval轮询时间

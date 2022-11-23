@@ -1,23 +1,41 @@
+
+# 参考 https://www.jb51.net/article/190220.htm
+
 import mysql.connector
 
-mydb = mysql.connector.connect(
-    host="66.59.199.220",  # 数据库主机地址
-    user="root",  # 数据库用户名
-    passwd="Mysql_147",  # 数据库密码
-    auth_plugin='mysql_native_password'
-)
+class DB:
+    __host="66.59.199.220" # 数据库主机地址
+    __user="root"  # 数据库用户名
+    __passwd="Mysql_147"  # 数据库密码
+    __auth_plugin='mysql_native_password'
 
-def get_record(sql,na):
+    def __init__(self):
+        try:
+            self.db = mysql.connector.connect(
+                host = self.__host,
+                user = self.__user,
+                passwd = self.__passwd,
+                auth_plugin = self.__auth_plugin
+            )
+        except Exception as e:
+            print(e)
+            exit()
 
-    mycursor = mydb.cursor()
+        self.cursor = self.db.cursor()
 
-    mycursor.execute(sql,na)
+    def close(self):
+        try:
+            self.cursor.close()
+            self.db.close()
+        except Exception as e:
+            print(e)
 
-    myresult = mycursor.fetchall()  # fetchall() 获取所有记录
+    def get_record(self, sql, na):
+        self.cursor.execute(sql, na)
+        myresult = self.cursor.fetchall()  # fetchall() 获取所有记录
+        return myresult
 
-    return myresult
+    def insert_record(self, sql, na):
+        self.cursor.execute(sql, na)
+        self.db.commit()
 
-def insert_record(sql, na):
-    mycursor = mydb.cursor()
-    mycursor.execute(sql, na)
-    mydb.commit()
