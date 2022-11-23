@@ -39,3 +39,4 @@ class DB:
         self.cursor.execute(sql, na)
         self.db.commit()
 
+
