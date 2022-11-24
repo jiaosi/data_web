@@ -45,6 +45,7 @@ house_trade_data.fillna(0, inplace = True)
 sql = "INSERT INTO mytest_db.house_trade_data(year,month,day,new_total_area,new_residence_num,new_residence_area,old_total_area,old_residence_num,old_residence_area,date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
 
 na = tuple(house_trade_data.values[0])
-db.insert_record(sql, na)
-
+mydb = db.DB()
+mydb.insert_record(sql, na)
+mydb.close()
 # house_trade_data.to_csv('./files/house_trade_data.csv', index = False)
